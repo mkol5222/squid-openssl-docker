@@ -8,7 +8,7 @@ bash scripts/build.sh
 Run container
 ```bash
 # interactively
-docker run -p 3128:3128 --name squid local/squid
+docker run -p 3128:3128 --name squid --rm local/squid
 # daemon
 docker run -d -p 3128:3128 --restart unless-stopped --name squid local/squid
 ```
@@ -32,7 +32,7 @@ You can also map cache data: ` -v /path/to/data:/var/spool/squid`
 http_proxy=http://127.0.0.1:3128 curl -v http://superstes.eu
 > TCP_MISS/301 478 GET http://superstes.eu/ - HIER_DIRECT/superstes.eu text/html
 
-https_proxy=http://127.0.0.1:3128 curl -v https://superstes.eu
+https_proxy=http://127.0.0.1:3128 curl -v https://superstes.eu -L -vvv 2>&1 -k | grep CN
 > NONE_NONE/200 0 CONNECT superstes.eu:443 - HIER_NONE/- -
 > TCP_TUNNEL/200 6178 CONNECT superstes.eu:443 - HIER_DIRECT/superstes.eu -
 ```
