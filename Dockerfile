@@ -1,4 +1,5 @@
 FROM debian:latest
+LABEL org.opencontainers.image.source="https://github.com/mkol5222/squid-openssl-docker"
 
 ENV SQUID_DIR_CACHE=/var/spool/squid \
     SQUID_DIR_LOG=/var/log/squid \
