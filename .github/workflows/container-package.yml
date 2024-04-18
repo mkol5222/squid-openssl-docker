@@ -34,12 +34,12 @@ jobs:
           docker buildx create --use --name multi-arch-builder
           TAG=$(date +%Y-%m-%d)
           docker buildx build --load --platform=linux/amd64 -t ${IMAGE_NAME}:$TAG .
-          docker tag ${IMAGE_NAME}:$TAG ghcr.io/mkol5222/${IMAGE_NAME}:$TAG 
+          docker tag ${IMAGE_NAME}:$TAG ghcr.io/${IMAGE_NAME}:$TAG 
       - name: Push Docker image
         run: |
           TAG=$(date +%Y-%m-%d) 
           docker push ghcr.io/mkol5222/${IMAGE_NAME}:$TAG
           echo "Use:"
-          echo "   echo<your-packages-ro-pat> | docker login ghcr.io -u mkol5222 --password-stdin"
-          echo "   docker pull ghcr.io/mkol5222/${IMAGE_NAME}:$TAG"
+          # echo "   echo<your-packages-ro-pat> | docker login ghcr.io -u mkol5222 --password-stdin"
+          echo "   docker pull ghcr.io/${IMAGE_NAME}:$TAG"
           
