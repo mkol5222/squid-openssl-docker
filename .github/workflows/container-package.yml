@@ -1,0 +1,45 @@
+
+name: Build and publish Docker image
+
+# configure manual trigger
+on:
+  workflow_dispatch:
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Test me
+        run: |
+          echo "see >${GITHUB_TOKEN}<" #  ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to Docker registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: mkol5222
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Docker image
+        run: |
+          docker buildx create --use --name multi-arch-builder
+          TAG=$(date +%Y-%m-%d)
+          docker buildx build --load --platform=linux/amd64 -t ${IMAGE_NAME}:$TAG .
+          docker tag ${IMAGE_NAME}:$TAG ghcr.io/mkol5222/${IMAGE_NAME}:$TAG 
+      - name: Push Docker image
+        run: |
+          TAG=$(date +%Y-%m-%d) 
+          docker push ghcr.io/mkol5222/${IMAGE_NAME}:$TAG
+          echo "Use:"
+          echo "   echo<your-packages-ro-pat> | docker login ghcr.io -u mkol5222 --password-stdin"
+          echo "   docker pull ghcr.io/mkol5222/${IMAGE_NAME}:$TAG"
+          
