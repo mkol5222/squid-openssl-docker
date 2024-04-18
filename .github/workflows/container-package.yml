@@ -38,7 +38,7 @@ jobs:
       - name: Push Docker image
         run: |
           TAG=$(date +%Y-%m-%d) 
-          docker push ghcr.io/mkol5222/${IMAGE_NAME}:$TAG
+          docker push ghcr.io/${IMAGE_NAME}:$TAG
           echo "Use:"
           # echo "   echo<your-packages-ro-pat> | docker login ghcr.io -u mkol5222 --password-stdin"
           echo "   docker pull ghcr.io/${IMAGE_NAME}:$TAG"
